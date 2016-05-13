@@ -2,7 +2,7 @@
 
 Integrating Python with Neo4j.
 
-[![Build Status](https://travis-ci.org/RenanPalmeira/pyneo4j.svg?branch=master)](https://travis-ci.org/RenanPalmeira/pyneo4j)[![PyPI](https://img.shields.io/pypi/v/pyneo4j.svg)](https://pypi.python.org/pypi/pyneo4j)
+[![Build Status](https://travis-ci.org/RenanPalmeira/pyneo4j.svg?branch=master)](https://travis-ci.org/RenanPalmeira/pyneo4j) [![PyPI](https://img.shields.io/pypi/v/pyneo4j.svg)](https://pypi.python.org/pypi/pyneo4j)
 
 ### Demo/Example
 

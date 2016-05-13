@@ -25,3 +25,7 @@ Examples
 * Pyramid
 
     - https://github.com/renanpalmeira/neopyramid
+
+* Jupyter/IPython Notebook
+
+    - https://github.com/renanpalmeira/pyneo4j/blob/master/tests/PyNeo4j%20Example.ipynb
