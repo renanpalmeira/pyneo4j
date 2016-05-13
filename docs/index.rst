@@ -6,11 +6,21 @@
 Welcome to PyNeo4j's documentation!
 ===================================
 
+Integrating Python with the all features of Neo4j.
+
+Why Neo4j?
+==========
+	
+	- http://neo4j.com/top-ten-reasons/
+	- http://www.infoq.com/articles/full-stack-web-development-using-neo4j
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
+   *
 
 
 Indices and tables
