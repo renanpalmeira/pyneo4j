@@ -1,0 +1,5 @@
+include AUTHORS.txt
+include LICENSE.txt
+include MANIFEST.in
+include README.md
+recursive-include pyneo4j *.py
