@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
+from pyneo4j.utils import PREFIX_ALL_NODES, to_nodes
 from .node import NodeQuerySet
+from .queries import Q as Queries
 
 class QuerySet(object):
 	label = None
@@ -8,6 +10,14 @@ class QuerySet(object):
 	_first_node = None
 	
 	def __new__(cls, label, *args, **kwargs):
+		obj = None
+
+		def _create_queries(label, obj):
+			_nodes = to_nodes(label, obj.children)
+			result = [NodeQuerySet(node[0]) for node in _nodes]
+			result.reverse()
+			return result
+
 		if kwargs and label:
 			cls._nodes_by_labels = cls._graph.labels.get(label)
 			_first_node = cls._nodes_by_labels.get(**kwargs)
@@ -17,15 +27,35 @@ class QuerySet(object):
 				_first_node = _first_node[0]
 				return NodeQuerySet(_first_node)
 
+
+		if len(args)>0 and type(args[0])==Queries and hasattr(args[0], 'children'):
+			"""
+			Check if user send Queries (Q(id=...)) and label
+			"""
+			obj = args[0]
+
+		if type(label)==Queries and hasattr(label, 'children') and obj is not None:
+			"""
+			Just sende Queries (Q(id=...))
+			"""
+			obj = label
+			return _create_queries('*', obj)
+
+		elif obj and label:
+			return _create_queries(label, obj)
+
 		return super(QuerySet, cls).__new__(cls)
 
 	def __init__(self, label, *args, **kwargs):
 		self.label = label
 
-		if hasattr(self, '_nodes_by_labels') is False:
+		if self.label in PREFIX_ALL_NODES:
+			self.label = 'n' # Inspired by http://neo4j.com/docs/stable/query-match.html#match-get-all-nodes
+			self._nodes_by_labels = self._graph.nodes
+
+		elif hasattr(self, '_nodes_by_labels') is False:
 			self._nodes_by_labels = self._graph.labels.get(self.label)
 
-		
 	def __repr__(self):
 		return '<Neo4j Node: {0}>'.format(self.label)
 		
@@ -44,7 +74,12 @@ class QuerySet(object):
 	def _insert(self):
 		pass
 
-	def filter(self, **kwargs):
+	def filter(self, obj=None, **kwargs):
+		if obj is not None and not kwargs and hasattr(obj, 'children'):
+			_nodes = to_nodes(self.label, obj.children)
+			result = [NodeQuerySet(node[0]) for node in _nodes]
+			result.reverse()
+			return result
 		return self._node_filter(**kwargs)
 
 	def get(self, **kwargs):

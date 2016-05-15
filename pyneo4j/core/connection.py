@@ -7,6 +7,14 @@ try:
 	from neo4j.v1 import GraphDatabase, basic_auth
 except ImportError as e:
 	from neo4jrestclient.client import GraphDatabase
+	from neo4jrestclient.client import Node as Neo4jNode
+
+gdb = None
 
 def connection(url):
-	return GraphDatabase(url)
+	global gdb
+	gdb = GraphDatabase(url)
+	return gdb
+
+def run(cypher):
+	return gdb.query(cypher, returns=(Neo4jNode))
