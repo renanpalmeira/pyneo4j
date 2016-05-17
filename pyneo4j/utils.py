@@ -6,13 +6,13 @@ PREFIX_ALL_NODES = ['*', 'n', '']
 def relationship_text(text, lookup='upper'):
 	return getattr(text, lookup)()
 
-def to_nodes(label, matchs):
+def queries_nodes(label, matchs):
 
 	if label in PREFIX_ALL_NODES:
 		cypher = """MATCH (cypher) WHERE {0} RETURN cypher"""
 	else:
 		cypher = """MATCH (cypher:{0}) WHERE {1} RETURN cypher"""
-	
+
 	queries = ''	
 	index = 1
 	last = len(matchs)
@@ -28,4 +28,5 @@ def to_nodes(label, matchs):
 		cypher = cypher.format(queries)
 	else:
 		cypher = cypher.format(label, queries)
+
 	return run(cypher)

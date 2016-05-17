@@ -13,7 +13,7 @@ class RelationshipQuerySet(object):
 		_properties = kwargs
 
 		for arg in args:
-			if hasattr(arg, '_nodes_by_labels'): # Node Objetive
+			if hasattr(arg, '_nodes_by_labels'): # Node object
 				_nodes.append(arg)
 
 			elif isinstance(arg, str): # name relationship
@@ -30,10 +30,10 @@ class RelationshipQuerySet(object):
 			return '<Relationship#{0}>'.format(self._relationship_name.title())
 
 	def _create_relationship(self, nodes, relationship):
-		if not type(nodes) is list and len(nodes)!=2:
+		if type(nodes) is not list and len(nodes)!=2:
 			return False
 
-		if not type(relationship) is str:
+		if type(relationship) is not str:
 			return False
 
 		# get node by neo4j-driver/neo4jrestclient
@@ -51,9 +51,6 @@ class RelationshipQuerySet(object):
 			self.relationship = relationships[relationships.index(node_last)]
 
 		return True
-
-
-
 
 class NodeRelationshipQuerySet(object):
 

@@ -8,14 +8,14 @@ from pyneo4j.utils import Q
 class PyNeo4jTest(TestCase):
 	def setUp(self):
 		self.total = 143
-		self.node = Node('Human', name='Rey')
+		self.node = Node('Human', name='Rey') # case sensitive
 
 	def test_node(self):
 		self.assertEqual(len(self.node), 1)
 
 	def test_relationship(self):
 		lived = self.node.Lived()
-		self.assertEqual(lived.name, 'Jakku') # case sensitive
+		self.assertEqual(lived.name, 'Jakku')
 
 	def test_filter_or(self):
 		daughter, father = Node('Human').filter(Q(name='Rey') | Q(name='Luke Skywalker'))
@@ -27,6 +27,16 @@ class PyNeo4jTest(TestCase):
 
 		querie_label = Node('Human', Q(id=random.randint(1, self.total)))
 		querie_nodes = Node(Q(id=random.randint(1, self.total)))
+
+		return True
+
+	def test_node_relationship(self):
+		"""
+		CREATE (r:Human {name:"Rey"})-[:FRIEND]->(b:Droid {name:"BB8"})
+		RETURN r, c
+		"""
+		droid, rey = Node('*').filter(Q(name='Rey') | Q(name='BB8')) # order by alphabetic (for a while)
+		rey.Friend(droid)
 
 		return True
 

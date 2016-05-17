@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from pyneo4j.utils import PREFIX_ALL_NODES, to_nodes
+from pyneo4j.utils import PREFIX_ALL_NODES, queries_nodes
 from .node import NodeQuerySet
 from .queries import Q as Queries
 
@@ -14,7 +14,7 @@ class QuerySet(object):
 		obj = None
 
 		def _create_queries(label, obj):
-			_nodes = to_nodes(label, obj.children)
+			_nodes = queries_nodes(label, obj.children)
 			result = [NodeQuerySet(node[0]) for node in _nodes]
 			result.reverse()
 			return result
@@ -31,13 +31,13 @@ class QuerySet(object):
 
 		if len(args)>0 and type(args[0])==Queries and hasattr(args[0], 'children'):
 			"""
-			Check if user send Queries (Q(id=...)) and label
+			Check if user send Queries (Q(Label, id=...)) and label
 			"""
 			obj = args[0]
 
 		if type(label)==Queries and hasattr(label, 'children') and obj is not None:
 			"""
-			Just sende Queries (Q(id=...))
+			Just send Queries (Q(id=...))
 			"""
 			obj = label
 			return _create_queries('*', obj)
@@ -51,7 +51,8 @@ class QuerySet(object):
 		self.label = label
 
 		if self.label in PREFIX_ALL_NODES:
-			self.label = 'n' # Inspired by http://neo4j.com/docs/stable/query-match.html#match-get-all-nodes
+			# Inspired by http://neo4j.com/docs/stable/query-match.html#match-get-all-nodes
+			self.label = '*'
 			self._nodes_by_labels = self._graph.nodes
 
 		elif hasattr(self, '_nodes_by_labels') is False:
@@ -77,7 +78,7 @@ class QuerySet(object):
 
 	def filter(self, obj=None, **kwargs):
 		if obj is not None and not kwargs and hasattr(obj, 'children'):
-			_nodes = to_nodes(self.label, obj.children)
+			_nodes = queries_nodes(self.label, obj.children)
 			result = [NodeQuerySet(node[0]) for node in _nodes]
 			result.reverse()
 			return result

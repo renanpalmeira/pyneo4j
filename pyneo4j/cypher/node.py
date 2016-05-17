@@ -12,8 +12,22 @@ class NodeQuerySet(object):
 			return self.node.properties[name]
 		else:
 			name = self.RELATIONSHIP_TEXT(name)
-			def wrapper(*args, **kwargs):
+			def wrapper(other=None, *args, **kwargs):
 				relationships = self.node.relationships.all(types=[name])
+
+				if other is not None:
+					queryset = None
+					relationships = [relationship.end for relationship in relationships]
+					other = other.node # get node by neo4j-driver/neo4jrestclient
+					if not other in relationships: # not have't relationship
+						queryset = self.node.relationships.create(name, other)
+					else:
+						queryset = relationships[relationships.index(other)]
+
+					if queryset:
+						return NodeRelationshipQuerySet(queryset)
+					return None
+
 				if len(relationships)==1:
 					return NodeRelationshipQuerySet(relationships[0])
 				return [NodeRelationshipQuerySet(relationship) for relationship in relationships]

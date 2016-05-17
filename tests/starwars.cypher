@@ -142,6 +142,8 @@ create (_139:`Planet` {`climate`:"temperate", `diameter`:"unknown", `name`:"Shil
 create (_140:`Planet` {`climate`:"arid, temperate, tropical", `diameter`:"13850", `name`:"Kalee", `terrain`:"rainforests, cliffs, canyons, seas"})
 create (_141:`Planet` {`climate`:"unknown", `diameter`:"unknown", `name`:"Umbara", `terrain`:"unknown"})
 create (_142:`Planet` {`climate`:"unknown", `diameter`:"unknown", `name`:"Jakku", `terrain`:"deserts"})
+create _0-[:`FRIEND`]->_19
+create _0-[:`FATHER`]->_80
 create _0-[:`LIVED`]->_1
 create _2-[:`LIVED`]->_1
 create _3-[:`LIVED`]->_89
@@ -221,8 +223,13 @@ create _76-[:`LIVED`]->_95
 create _77-[:`LIVED`]->_83
 create _78-[:`LIVED`]->_93
 create _79-[:`LIVED`]->_109
+create _80-[:`FRIEND`]->_82
+create _80-[:`FRIEND`]->_79
+create _80-[:`FRIEND`]->_5
+create _80-[:`FRIEND`]->_14
 create _80-[:`LIVED`]->_142
 create _81-[:`LIVED`]->_109
 create _82-[:`LIVED`]->_109
+create _80-[:`FRIEND`]->_13
 ;
 commit
