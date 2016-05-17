@@ -3,21 +3,24 @@ from .core.connection import run
 
 PREFIX_ALL_NODES = ['*', 'n', '']
 
+def relationship_text(text, lookup='upper'):
+	return getattr(text, lookup)()
+
 def to_nodes(label, matchs):
 
 	if label in PREFIX_ALL_NODES:
-		cypher = """MATCH (cypher) WHERE {} RETURN cypher"""
+		cypher = """MATCH (cypher) WHERE {0} RETURN cypher"""
 	else:
-		cypher = """MATCH (cypher:{}) WHERE {} RETURN cypher"""
+		cypher = """MATCH (cypher:{0}) WHERE {1} RETURN cypher"""
 	
 	queries = ''	
 	index = 1
 	last = len(matchs)
 	for key, value in matchs:
 		if key.upper()=='ID':
-			queries += 'ID(cypher)={}'.format(value)
+			queries += 'ID(cypher)={0}'.format(value)
 		else:	
-			queries += 'cypher.{}="{}"'.format(key, value)
+			queries += 'cypher.{0}="{1}"'.format(key, value)
 		if not index==last:
 			queries += ' OR '
 		index += 1

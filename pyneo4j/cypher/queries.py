@@ -22,7 +22,7 @@ class Q(object):
 		index = 1
 		last = len(self.children)
 		for key, value in self.children:
-			queryset += '(\'{}\': \'{}\')'.format(key, value)
+			queryset += '(\'{0}\': \'{1}\')'.format(key, value)
 			if not index==last:
 				queryset += ', '
 			index += 1

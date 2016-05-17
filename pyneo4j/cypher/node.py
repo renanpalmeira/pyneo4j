@@ -30,7 +30,3 @@ class NodeQuerySet(object):
 			_display = self.node.properties[self.PROPERTY].encode('ascii', 'ignore')
 		
 		return '<Node#{0}: {1}>'.format(_id_node, _display)
-
-	def relationships(self):
-		relationships = self.node.relationships.all()
-		return [NodeRelationshipQuerySet(relationship) for relationship in relationships]

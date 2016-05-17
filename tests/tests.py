@@ -2,7 +2,7 @@ import sys
 import logging
 import random
 from unittest import TestCase
-from pyneo4j import Node
+from pyneo4j import Node, Relationship
 from pyneo4j.utils import Q
 
 class PyNeo4jTest(TestCase):
@@ -27,5 +27,12 @@ class PyNeo4jTest(TestCase):
 
 		querie_label = Node('Human', Q(id=random.randint(1, self.total)))
 		querie_nodes = Node(Q(id=random.randint(1, self.total)))
+
+		return True
+
+	def test_relationship(self):
+		jedi, finn = Node('Human').filter(Q(name='Rey') | Q(name='Finn'))
+
+		friend = Relationship(jedi, 'FRIEND', finn)
 
 		return True

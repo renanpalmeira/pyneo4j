@@ -6,6 +6,7 @@ from .queries import Q as Queries
 
 class QuerySet(object):
 	label = None
+	# _graph a instance of main class of connection in neo4j (GraphDatabase)
 	_graph = None
 	_first_node = None
 	
