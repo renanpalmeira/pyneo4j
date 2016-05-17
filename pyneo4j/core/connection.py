@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 try:
 	"""
-	For Using neo4j 3 bolt http://neo4j.com/docs/developer-manual/current/#driver
+	For Using neo4j 3 bolt http://neo4j.com/docs/developer-manual/current/#driver-manual-index
 	"""
 	from neo4j.v1 import GraphDatabase, basic_auth
 except ImportError as e:

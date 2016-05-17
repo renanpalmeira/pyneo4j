@@ -3,6 +3,9 @@ from pyneo4j.core import graph
 from pyneo4j.cypher.queryset import QuerySet
 from pyneo4j.cypher.relationship import RelationshipQuerySet
 
+def auth(user, password):
+	pass
+
 class GraphDatabase(graph.CoreGraphDatabase):
 	_default_host = 'http://localhost:7474'
 

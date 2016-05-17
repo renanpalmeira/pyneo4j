@@ -35,7 +35,7 @@ class PyNeo4jTest(TestCase):
 		CREATE (r:Human {name:"Rey"})-[:FRIEND]->(b:Droid {name:"BB8"})
 		RETURN r, c
 		"""
-		droid, rey = Node('*').filter(Q(name='Rey') | Q(name='BB8')) # order by alphabetic (for a while)
+		droid, rey = Node('*').filter(Q(name='BB8') | Q(name='Rey')) # order by alphabetic (for a while)
 		rey.Friend(droid)
 
 		return True

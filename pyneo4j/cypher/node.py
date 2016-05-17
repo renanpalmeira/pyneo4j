@@ -1,8 +1,8 @@
 from .relationship import NodeRelationshipQuerySet
+from pyneo4j.utils import relationship_text
 
 class NodeQuerySet(object):
 	PROPERTY = None
-	RELATIONSHIP_TEXT = lambda self, text: text.upper()
 
 	def __init__(self, node, *args, **kwargs):
 		self.node = node
@@ -11,7 +11,7 @@ class NodeQuerySet(object):
 		if name in self.node.properties:
 			return self.node.properties[name]
 		else:
-			name = self.RELATIONSHIP_TEXT(name)
+			name = relationship_text(name)
 			def wrapper(other=None, *args, **kwargs):
 				relationships = self.node.relationships.all(types=[name])
 
