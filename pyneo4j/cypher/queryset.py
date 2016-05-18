@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
 
-from pyneo4j.utils import PREFIX_ALL_NODES, queries_nodes
 from .node import NodeQuerySet
 from .queries import Q as Queries
+from pyneo4j.core.graph import GraphDatabase
+from pyneo4j.utils import PREFIX_ALL_NODES, queries_nodes
 
 class QuerySet(object):
 	label = None
@@ -12,6 +13,8 @@ class QuerySet(object):
 	
 	def __new__(cls, label, *args, **kwargs):
 		obj = None
+
+		cls._graph = GraphDatabase()
 
 		def _create_queries(label, obj):
 			_nodes = queries_nodes(label, obj.children)

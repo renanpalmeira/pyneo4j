@@ -2,12 +2,13 @@ import sys
 import logging
 import random
 from unittest import TestCase
-from pyneo4j import Node, Relationship
+from pyneo4j import GraphDatabase, Node, Relationship
 from pyneo4j.utils import Q
 
 class PyNeo4jTest(TestCase):
 	def setUp(self):
 		self.total = 143
+		self.authentication = GraphDatabase(user='neo4j', password='python')
 		self.node = Node('Human', name='Rey') # case sensitive
 
 	def test_node(self):

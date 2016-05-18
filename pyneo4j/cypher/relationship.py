@@ -1,3 +1,4 @@
+from pyneo4j.core.graph import GraphDatabase
 from pyneo4j.utils import relationship_text
 
 class RelationshipQuerySet(object):
@@ -9,6 +10,7 @@ class RelationshipQuerySet(object):
 	_relationship_name = ''
 
 	def __init__(self, *args, **kwargs):
+		self._graph = GraphDatabase()
 		_nodes = []
 		_properties = kwargs
 
