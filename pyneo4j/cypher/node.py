@@ -10,6 +10,8 @@ class NodeQuerySet(object):
 	def __getattr__(self, name, *args, **kwargs):
 		if name in self.node.properties:
 			return self.node.properties[name]
+		elif name=='id':
+			return self.node.id
 		else:
 			name = relationship_text(name)
 			def wrapper(other=None, *args, **kwargs):

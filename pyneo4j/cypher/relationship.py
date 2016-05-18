@@ -68,4 +68,6 @@ class NodeRelationshipQuerySet(object):
 	def __getattr__(self, name, *args, **kwargs):
 		if name in self.relationship.end.properties:
 			return self.relationship.end.properties[name]
+		elif name=='id':
+			return self.relationship.id
 		raise KeyError("Relationship#{0} has no property {1}. Read more: http://goo.gl/TnbmHo/".format(self.relationship.id, name))

@@ -19,7 +19,7 @@ http://neo4j.com/download/
 	$ pip install -e .
 	$ pip install -r requirements.txt # or tests/requirements-dev.txt
 	$ $NEO4J_FOLDER/bin/neo4j-shell -c < tests/starwars.cypher  # Import sample graph's
-	$ nosetests --verbose tests/ # If your Neo4j need authentication set on tests/tests.py, but not 'git add' with your credentials, this is just run the tests
+	$ nosetests --verbose tests/ # If your Neo4j needs authentication set on tests/tests.py, but not in 'git add' with your credentials, than just run the tests
 
 ### Installation (waiting for approval)
 
