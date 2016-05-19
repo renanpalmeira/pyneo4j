@@ -18,16 +18,16 @@ Examples
 
 * Tornado
 
-	- https://github.com/renanpalmeira/neotornado
+	- https://github.com/renanpalmeira/neo4j-tornado
+
+* Pyramid
+
+    - https://github.com/renanpalmeira/neo4j-pyramid
 
 * Django
 
     - https://github.com/renanpalmeira/neodjango
-      
-      
-* Pyramid
 
-    - https://github.com/renanpalmeira/neopyramid
 
 * Jupyter/IPython Notebook
 
