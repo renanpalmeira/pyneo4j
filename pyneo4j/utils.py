@@ -1,5 +1,5 @@
-from .cypher.queries import Q
-from .core.connection import run
+from .queryset.queries import Q
+from .core.graph import GraphDatabase
 
 PREFIX_ALL_NODES = ['*', 'n', '']
 
@@ -9,18 +9,18 @@ def relationship_text(text, lookup='upper'):
 def queries_nodes(label, matchs):
 
 	if label in PREFIX_ALL_NODES:
-		cypher = """MATCH (cypher) WHERE {0} RETURN cypher"""
+		cypher = """MATCH (n) WHERE {0} RETURN n"""
 	else:
-		cypher = """MATCH (cypher:{0}) WHERE {1} RETURN cypher"""
+		cypher = """MATCH (n:{0}) WHERE {1} RETURN n"""
 
 	queries = ''	
 	index = 1
 	last = len(matchs)
 	for key, value in matchs:
 		if key.upper()=='ID':
-			queries += 'ID(cypher)={0}'.format(value)
+			queries += 'ID(n)={0}'.format(value)
 		else:	
-			queries += 'cypher.{0}="{1}"'.format(key, value)
+			queries += 'n.{0}="{1}"'.format(key, value)
 		if not index==last:
 			queries += ' OR '
 		index += 1
@@ -29,4 +29,4 @@ def queries_nodes(label, matchs):
 	else:
 		cypher = cypher.format(label, queries)
 
-	return run(cypher)
+	return GraphDatabase.run(cypher)

@@ -1,73 +1,42 @@
-from pyneo4j.core.graph import GraphDatabase
-from pyneo4j.utils import relationship_text
+class RelationshipsProxy(object):
+	_relationships = None
+	_session = None
 
-class RelationshipQuerySet(object):
-	"""
-	_graph a instance of main class of connection in neo4j (GraphDatabase)
-	"""
-	_graph = None
-	_relationship = None
-	_relationship_name = ''
+	def __init__(self, session, relationships=None):
+		self._session = session
 
-	def __init__(self, *args, **kwargs):
-		self._graph = GraphDatabase()
-		_nodes = []
-		_properties = kwargs
+		if relationships:
+			self._relationships = relationships
 
-		for arg in args:
-			if hasattr(arg, '_nodes_by_labels'): # Node object
-				_nodes.append(arg)
+	def __len__(self):
+		return len(self._relationships)
 
-			elif isinstance(arg, str): # name relationship
-				self._relationship_name = relationship_text(arg)
+	def __getitem__(self, pos):
+		return Relationship(self._relationships[pos])
 
-		self._create_relationship(_nodes, self._relationship_name)
+	def all(self, types):
+		match = 'MATCH (n:{0} {1})-[r:{2}]->(out) RETURN n, r, out'
+		self._relationships = list(self._session.run(match))
+		return RelationshipsProxy(self._session, self._relationships)
 
-	def __repr__(self):
-		if self.relationship:
-			_id = self.relationship.id
-			_url = self.relationship.url
-			return '<Relationship#{0}: {1}>'.format(_id, _url)
-		else:
-			return '<Relationship#{0}>'.format(self._relationship_name.title())
+	def get(self, label):
+		return RelationshipsProxy(self._session, label)
 
-	def _create_relationship(self, nodes, relationship):
-		if type(nodes) is not list and len(nodes)!=2:
-			return False
+class Relationship(object):
 
-		if type(relationship) is not str:
-			return False
+	_nodes = None
+	_label = None
+	_session = None
 
-		# get node by neo4j-driver/neo4jrestclient
-		node_first = nodes[0].node
-		node_last = nodes[1].node
+	def __init__(self, relationship):
+		self._relationship = relationship
 
-		# get relationship by neo4j-driver/neo4jrestclient
-		relationships = node_first.relationships.all(types=[relationship])
+	@property
+	def end(self):
+		if 'r' in self._relationship.keys():
+			return Relationship(self._relationship['out'])
+		return None
 
-		relationships = [relationship.end for relationship in relationships]
-		if not node_last in relationships: # not have't relationship
-			relationship = relationship
-			self.relationship = self._graph.relationships.create(node_first, relationship, node_last)
-		else:
-			self.relationship = relationships[relationships.index(node_last)]
-
-		return True
-
-class NodeRelationshipQuerySet(object):
-
-	def __init__(self, relationship, *args, **kwargs):
-		self.relationship = relationship
-
-	def __repr__(self):
-		_id_relationship = self.relationship.id
-		_display = self.relationship.url
-		
-		return '<Relationship#{0}: {1}>'.format(_id_relationship, _display)
-
-	def __getattr__(self, name, *args, **kwargs):
-		if name in self.relationship.end.properties:
-			return self.relationship.end.properties[name]
-		elif name=='id':
-			return self.relationship.id
-		raise KeyError("Relationship#{0} has no property {1}. Read more: http://goo.gl/TnbmHo/".format(self.relationship.id, name))
+	@property
+	def properties(self):
+		return self._relationship

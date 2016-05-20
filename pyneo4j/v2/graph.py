@@ -1,5 +1,5 @@
-from pyneo4j.cypher.queryset import QuerySet
-from pyneo4j.cypher.relationship import RelationshipQuerySet
+from pyneo4j.queryset.queryset import QuerySet
+from pyneo4j.queryset.relationship import RelationshipQuerySet
 
 class Node(QuerySet):
 	"""
